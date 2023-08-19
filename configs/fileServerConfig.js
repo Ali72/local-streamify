@@ -4,23 +4,19 @@ const midRate = 1024 * 512
 const lowRate = 100000;
 const soLowRate = 10000;
 
-const default_success_headers = {
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': 0,
-    'Content-Type': 'audio/mpeg',
-}
-
 module.exports = {
+    hostName:"127.0.0.1",
+    port: 8001,
     routes:[
         {
             url:"/music.mp3",
             filePath:"files/file_example_MP3_1MG.mp3",
             downloadThrottle:soLowRate,
-            response: {
-                statusCode: 206,
-                headers: default_success_headers
-            }
+        },
+        {
+            url:"/video.mp4",
+            filePath:"files/hls/out.mp4",
+            downloadThrottle:highRate,
         },
     ],
 }

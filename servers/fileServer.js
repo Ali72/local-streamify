@@ -1,11 +1,12 @@
-const fs = require('fs');
 const {ThrottleGroup} = require("stream-throttle");
 const {fileServerConfig} = require("../configs");
 const httpAttach = require("http-attach");
 const readStreams = require("../helper/fileReadStreams");
-const {getFileStat, getRange} = require("../helper/utiles");
+const {getFileStats} = require("../helper/utiles");
+const http = require("http");
 
-function attachServer(server) {
+function startServer() {
+    let server = http.createServer()
 
     let url2routesDict = [];
     fileServerConfig.routes.forEach((item) => {
@@ -16,24 +17,24 @@ function attachServer(server) {
         const item = url2routesDict[String(req.url)]
 
         if (item) {
-            streamFileChunked(item, req, res);
+            streamFile(item, req, res);
         } else {
             console.log("404 : Not found");
             res.statusCode = 404
             res.end("Not found")
         }
     })
-    console.log("File server is running...")
+
+    server.listen(fileServerConfig.port, fileServerConfig.hostName)
+    console.log("File Server is running on host:", fileServerConfig.hostName, "- port:", fileServerConfig.port)
 }
 
 
-
-
-function streamFileChunked(item, req, res) {
+function streamFile(item, req, res) {
 
     const speed = new ThrottleGroup({rate: item.downloadThrottle});
 
-    getFileStat(item.filePath, function (err, stats) {
+    getFileStats(item.filePath, function (err, stats) {
 
         if (err) {
             console.log(err);
@@ -42,26 +43,19 @@ function streamFileChunked(item, req, res) {
             return
         }
 
-        const range = getRange(req, stats)
-        let stream = readStreams.make(item.filePath, range);
-
-        res.writeHead(item.response.statusCode, {
-            'Accept-Ranges': 'bytes',
-            'Content-Range': 'bytes ' + range.start + '-' + range.end + '/' + stats.size,
-            'Content-Length': range.end - range.start + 1,
-            ...item.response.headers,
-        });
+        let stream = readStreams.make(item.filePath);
 
         stream.pipe(speed.throttle()).pipe(res);
 
-        stream.on('open', () => {
-            console.log('open', new Date(), range)
-        })
+        stream
+            .on('open', () => {
+                console.log('open', new Date())
+            })
             .on('data', (chunk) => {
-                console.log(new Date(), chunk.length, range) // 65536 bytes
+                console.log(new Date(), chunk.length)
             })
             .on('close', () => {
-                console.log('close', new Date(), range)
+                console.log('close', new Date())
             });
 
 
@@ -69,7 +63,6 @@ function streamFileChunked(item, req, res) {
 }
 
 
-
 module.exports = {
-    attachServer
+    startServer
 }
