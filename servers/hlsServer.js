@@ -1,6 +1,6 @@
 const HLSServer = require('hls-server')
-const {hlsServerConfig} = require("../configs");
 const http = require("http");
+const hlsServerConfig = require("../configs/hlsServerConfig");
 
 
 

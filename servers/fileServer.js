@@ -1,9 +1,9 @@
 const {ThrottleGroup} = require("stream-throttle");
-const {fileServerConfig} = require("../configs");
 const httpAttach = require("http-attach");
 const readStreams = require("../helper/fileReadStreams");
 const {getFileStats} = require("../helper/utiles");
 const http = require("http");
+const fileServerConfig = require("../configs/fileServerConfig");
 
 function startServer() {
     let server = http.createServer()

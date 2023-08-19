@@ -20,4 +20,4 @@ class FileReadStreams {
     }
 }
 
-module.exports =  new FileReadStreams()
+module.exports = new FileReadStreams()
