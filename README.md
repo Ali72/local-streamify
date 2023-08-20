@@ -7,7 +7,7 @@
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [How to Use](#how_to_use)
+- [How to Use](#how-to-use)
 - [TODO](#todo)
 - [FAQ](#faq)
 - [Authors](#authors)
