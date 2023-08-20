@@ -32,7 +32,7 @@
 1. **Clone the Repository**
    
    ```bash
-   git clone https://github.com/your-username/local-streamify.git
+   git clone https://github.com/ali72/local-streamify.git
    cd local-streamify
    ```
 
@@ -98,4 +98,4 @@ To contribute, download the project, create a new branch, add your code, and the
 
 ## License
 
-Local-Streamify is available under the MIT license. See the [LICENSE](https://github.com/Ali72/AdsRepo/blob/master/LICENSE) file for more info.
+Local-Streamify is available under the MIT license. See the [LICENSE](https://github.com/Ali72/local-streamify/blob/master/LICENSE) file for more info.
